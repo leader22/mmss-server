@@ -15,8 +15,7 @@ const mmss = require('./lib/mmss');
 const server = require('./lib/server');
 
 mmss
-  .init(mpath)
-  .build()
+  .build(mpath)
   .then(() => {
     server.listen(port, () => {
       console.log(`App is running on port: ${port}`);

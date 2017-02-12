@@ -13,11 +13,6 @@
   "dependencies": {
     "body-parser": "^1.16.0",
     "express": "^4.14.1",
-    "graceful-fs": "^4.1.11",
-    "jschardet": "^1.4.1",
-    "jsmediatags": "^3.3.2",
-    "minimatch": "^3.0.3",
-    "recursive-readdir": "^2.1.0",
     "yargs": "^6.6.0"
   }
 }
