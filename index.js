@@ -9,7 +9,7 @@ const mmss = require('./lib/mmss');
 const server = require('./lib/server');
 
 const mpath = argv.mpath.replace('~', os.homedir());
-const { port, user, pass }= argv;
+const { port, user, pass } = argv;
 
 console.log(`Starting app...
   mpath:     ${mpath}
