@@ -2,8 +2,9 @@
 
 backend server impl.
 
+```
+pm2 start index.js -x -- --mpath ./xxxx/xxxx --user xxxxxxxx --pass xxxxxxxx
 
-## TODO
-- `jsmediatags`試す
-- サーバー起動のタイミングでID3解析してMediaTreeを
-- ヘッダにトークン持ちのリクエストだけ通すように
+pm2 stop 0
+```
+
