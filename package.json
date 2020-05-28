@@ -12,9 +12,9 @@
   "author": "leader22",
   "license": "MIT",
   "dependencies": {
-    "fastify": "^2.14.1",
-    "fastify-bearer-auth": "^4.2.0",
-    "fastify-helmet": "^3.0.2"
+    "fastify": "^3.0.0-rc.3",
+    "fastify-bearer-auth": "^5.0.0",
+    "fastify-helmet": "^4.0.1"
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",

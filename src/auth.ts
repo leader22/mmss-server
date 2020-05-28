@@ -16,6 +16,11 @@ export const generateAuthKeys = (
     keys.push({ id, token, expireAt });
   }
 
+  if (process.env.NODE_ENV === "test") {
+    keys.push({ id: "valid", token: "foo", expireAt: Date.now() + ttl });
+    keys.push({ id: "expired", token: "bar", expireAt: Date.now() - ttl });
+  }
+
   return keys;
 };
 
