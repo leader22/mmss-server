@@ -1,6 +1,9 @@
-import * as fastify from "fastify";
-import * as bearer from "fastify-bearer-auth";
-import * as helmet from "fastify-helmet";
+import fastify from "fastify";
+// TODO: wait until 5.x is published to npm
+// import bearer from "fastify-bearer-auth";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const bearer = require("fastify-bearer-auth");
+import helmet from "fastify-helmet";
 import { load, validate } from "./src/config";
 import { generateAuthKeys, validateAuthKey } from "./src/auth";
 import { readMediaFileStream } from "./src/media";
@@ -18,7 +21,8 @@ import { readMediaFileStream } from "./src/media";
   const server = fastify();
   server.register(helmet);
   server.register(bearer, {
-    auth: (token) => authKeys.some((key) => validateAuthKey(key, token)),
+    auth: (token: string) =>
+      authKeys.some((key) => validateAuthKey(key, token)),
   });
 
   server.get("/check", async () => {
