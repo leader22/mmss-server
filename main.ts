@@ -31,6 +31,9 @@ import { readMediaFileStream } from "./src/media";
 
   server.get("/track", async (request, reply) => {
     const path = request.query.path;
+    if (typeof path !== "string")
+      throw { statusCode: 400, message: "The query params: path is required!" };
+
     const readable = await readMediaFileStream(
       config.musicDirectory,
       path
