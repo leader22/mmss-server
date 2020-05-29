@@ -45,8 +45,23 @@ describe("GET /track", () => {
     expect(res.status).toBe(401);
   });
 
-  it("should return 400 w/ valid header but missing params", async () => {
+  it("should return 400 w/ valid header but schema violation", async () => {
     const res = await $get("/track", { Authorization: "Bearer foo" });
+    expect(res.status).toBe(400);
+
+    const res2 = await $get("/track?path", { Authorization: "Bearer foo" });
+    expect(res2.status).toBe(400);
+
+    const res3 = await $get("/track?path=non-audio.mp4", {
+      Authorization: "Bearer foo",
+    });
+    expect(res3.status).toBe(400);
+  });
+
+  it("should return 400 w/ valid header but file does not exists", async () => {
+    const res = await $get("/track?path=undef.mp3", {
+      Authorization: "Bearer foo",
+    });
     expect(res.status).toBe(400);
   });
 
@@ -56,5 +71,11 @@ describe("GET /track", () => {
     });
     expect(res.status).toBe(200);
     expect(res.headers.get("Content-type")).toBe("audio/mpeg");
+
+    const res2 = await $get("/track?path=/nest/sample.mp3", {
+      Authorization: "Bearer foo",
+    });
+    expect(res2.status).toBe(200);
+    expect(res2.headers.get("Content-type")).toBe("audio/mpeg");
   });
 });
