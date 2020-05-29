@@ -57,7 +57,7 @@ describe("GET /index", () => {
     const res = await $get("/index", { Authorization: "Bearer foo" });
     const json = await res.json();
     expect(json).toHaveLength(2);
-    expect(json[0]).toHaveProperty("name", "dummy");
+    expect(json[0]).toHaveProperty("name", "artist");
   });
 });
 

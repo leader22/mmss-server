@@ -33,7 +33,7 @@ My Mp3 Streaming Server SERVER.
 
 ## Test
 ```sh
-NODE_ENV=test npm start -- ./__tests__/config.json
+npm start -- ./__tests__/config.json
 npm t
 ```
 
