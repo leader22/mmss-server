@@ -7,29 +7,22 @@ const $get = async (path: string, headers = {}) => {
   return res;
 };
 
-describe("GET /check", () => {
+describe("Authorization", () => {
   it("should return 401 w/o header", async () => {
-    const res = await $get("/check");
+    const res = await $get("/index");
     expect(res.status).toBe(401);
   });
 
   it("should return 401 w/ invalid header", async () => {
-    const res = await $get("/check", { Authorization: "invalid" });
+    const res = await $get("/index", { Authorization: "invalid" });
     expect(res.status).toBe(401);
   });
 
   it("should return 401 w/ valid header but expired", async () => {
-    const res = await $get("/check", { Authorization: "Bearer bar" });
+    const res = await $get("/index", { Authorization: "Bearer bar" });
     expect(res.status).toBe(401);
   });
 
-  it("should return 200 w/ valid header", async () => {
-    const res = await $get("/check", { Authorization: "Bearer foo" });
-    expect(res.status).toBe(200);
-  });
-});
-
-describe("GET /track", () => {
   it("should return 401 w/o header", async () => {
     const res = await $get("/track");
     expect(res.status).toBe(401);
@@ -44,7 +37,24 @@ describe("GET /track", () => {
     const res = await $get("/track", { Authorization: "Bearer bar" });
     expect(res.status).toBe(401);
   });
+});
 
+describe("GET /index", () => {
+  it("should return 200 w/ valid header", async () => {
+    const res = await $get("/index", { Authorization: "Bearer foo" });
+    expect(res.status).toBe(200);
+    expect(res.headers.get("Content-type")).toBe("application/json");
+  });
+
+  it("should return 200 w/ valid JSON response", async () => {
+    const res = await $get("/index", { Authorization: "Bearer foo" });
+    const json = await res.json();
+    expect(json).toHaveLength(2);
+    expect(json[0]).toHaveProperty("name", "dummy");
+  });
+});
+
+describe("GET /track", () => {
   it("should return 400 w/ valid header but schema violation", async () => {
     const res = await $get("/track", { Authorization: "Bearer foo" });
     expect(res.status).toBe(400);
