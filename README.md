@@ -15,11 +15,11 @@ My Mp3 Streaming Server SERVER.
   - `bearer-auth`
 
 ## Routes
-### GET `/session`
+### GET `/index`
 - Request
   - Required header: `Authorization`
 - Response
-  - 200:  Success
+  - 200: Success w/ `application/json`
   - 401: Authorization required
 
 ### GET `/track`
