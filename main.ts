@@ -29,10 +29,21 @@ import { readMediaFileStream } from "./src/media";
 
   server.get<{ Querystring: { path: string } }>(
     "/track",
-    { schema: { querystring: { path: { type: "string" } } } },
+    {
+      schema: {
+        querystring: {
+          type: "object",
+          properties: {
+            path: { type: "string", pattern: "^.+.mp3$" },
+          },
+          required: ["path"],
+        },
+      },
+    },
     async (request, reply) => {
       const { path } = request.query;
 
+      console.warn(path);
       const readable = await readMediaFileStream(
         config.musicDirectory,
         path
