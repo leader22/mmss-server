@@ -43,12 +43,11 @@ import { readMediaFileStream } from "./src/media";
     async (request, reply) => {
       const { path } = request.query;
 
-      console.warn(path);
       const readable = await readMediaFileStream(
         config.musicDirectory,
         path
       ).catch((err) => {
-        console.log(path);
+        console.error(err);
         throw { statusCode: 400, message: err.message };
       });
 
