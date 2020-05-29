@@ -33,9 +33,11 @@ const compare = (a: string, b: string): boolean => {
   }
 };
 
-export const validateAuthKey = (key: AuthKey, token: string): boolean => {
-  const isSame = compare(key.token, token);
-  const isFresh = key.expireAt > Date.now();
-  if (isSame && isFresh) return true;
-  return false;
+export const validateAuthToken = (keys: AuthKey[], token: string): boolean => {
+  return keys.some((key) => {
+    const isSame = compare(key.token, token);
+    const isFresh = key.expireAt > Date.now();
+    if (isSame && isFresh) return true;
+    return false;
+  });
 };

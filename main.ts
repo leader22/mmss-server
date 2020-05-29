@@ -3,7 +3,7 @@ import cors from "fastify-cors";
 import bearer from "fastify-bearer-auth";
 import helmet from "fastify-helmet";
 import { load, validate } from "./src/config";
-import { generateAuthKeys, validateAuthKey } from "./src/auth";
+import { generateAuthKeys, validateAuthToken } from "./src/auth";
 import { readMediaFileStream } from "./src/media";
 
 (() => {
@@ -32,8 +32,7 @@ import { readMediaFileStream } from "./src/media";
   server.register(bearer, {
     // Type defs requires this, but not used because of `auth` function
     keys: new Set([]),
-    auth: (token: string) =>
-      authKeys.some((key) => validateAuthKey(key, token)),
+    auth: (token: string) => validateAuthToken(authKeys, token),
   });
 
   server.get("/index", async (_, reply) => {
