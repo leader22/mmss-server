@@ -7,7 +7,8 @@ type AuthKey = {
 };
 export const generateAuthKeys = (
   ids: string[],
-  { secret, ttl }: { secret: string; ttl: number }
+  { secret, ttl }: { secret: string; ttl: number },
+  isProd: boolean
 ): AuthKey[] => {
   const keys: AuthKey[] = [];
   for (const id of ids) {
@@ -16,7 +17,7 @@ export const generateAuthKeys = (
     keys.push({ id, token, expireAt });
   }
 
-  if (process.env.NODE_ENV === "test") {
+  if (!isProd) {
     keys.push({ id: "valid", token: "foo", expireAt: Date.now() + ttl });
     keys.push({ id: "expired", token: "bar", expireAt: Date.now() - ttl });
   }

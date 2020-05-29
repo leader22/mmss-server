@@ -1,4 +1,5 @@
 import fastify from "fastify";
+import cors from "fastify-cors";
 import bearer from "fastify-bearer-auth";
 import helmet from "fastify-helmet";
 import { load, validate } from "./src/config";
@@ -6,16 +7,27 @@ import { generateAuthKeys, validateAuthKey } from "./src/auth";
 import { readMediaFileStream } from "./src/media";
 
 (() => {
+  const env = process.env.NODE_ENV || "development";
+  console.log("NODE_ENV:", env);
+
   const [, , configPath] = process.argv;
   const config = validate(load(__dirname, configPath));
+  console.log(config);
 
-  const authKeys = generateAuthKeys(config.userIds, {
-    secret: config.tokenSecret,
-    ttl: config.tokenTtl,
-  });
+  const authKeys = generateAuthKeys(
+    config.userIds,
+    {
+      secret: config.tokenSecret,
+      ttl: config.tokenTtl,
+    },
+    env === "production"
+  );
   console.log(authKeys);
 
   const server = fastify();
+  server.register(cors, {
+    origin: env === "production" ? false : true,
+  });
   server.register(helmet);
   server.register(bearer, {
     // Type defs requires this, but not used because of `auth` function
@@ -33,6 +45,7 @@ import { readMediaFileStream } from "./src/media";
       throw { statusCode: 400, message: err.message };
     });
 
+    reply.header("Access-Control-Allow-Origin", "*");
     reply.type("application/json");
     return readable;
   });
@@ -61,6 +74,7 @@ import { readMediaFileStream } from "./src/media";
         throw { statusCode: 400, message: err.message };
       });
 
+      reply.header("Access-Control-Allow-Origin", "*");
       reply.type("audio/mpeg");
       return readable;
     }
