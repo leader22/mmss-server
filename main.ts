@@ -18,24 +18,20 @@ import { readMediaFileStream } from "./src/media";
   const server = fastify();
   server.register(helmet);
   server.register(bearer, {
+    // Type defs requires this, but not used because of `auth` function
     keys: new Set([]),
     auth: (token: string) =>
       authKeys.some((key) => validateAuthKey(key, token)),
   });
 
-  server.get("/check", async () => {
-    return {};
-  });
+  // Route to check auth token is still valid or NOT
+  server.get("/check", async () => ({}));
 
   server.get<{ Querystring: { path: string } }>(
     "/track",
+    { schema: { querystring: { path: { type: "string" } } } },
     async (request, reply) => {
-      const path = request.query.path;
-      if (typeof path !== "string")
-        throw {
-          statusCode: 400,
-          message: "The query params: path is required!",
-        };
+      const { path } = request.query;
 
       const readable = await readMediaFileStream(
         config.musicDirectory,
