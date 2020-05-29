@@ -24,8 +24,18 @@ import { readMediaFileStream } from "./src/media";
       authKeys.some((key) => validateAuthKey(key, token)),
   });
 
-  // Route to check auth token is still valid or NOT
-  server.get("/check", async () => ({}));
+  server.get("/index", async (_, reply) => {
+    const readable = await readMediaFileStream(
+      config.musicDirectory,
+      "music.json"
+    ).catch((err) => {
+      console.error(err);
+      throw { statusCode: 400, message: err.message };
+    });
+
+    reply.type("application/json");
+    return readable;
+  });
 
   server.get<{ Querystring: { path: string } }>(
     "/track",
