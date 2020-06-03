@@ -44,7 +44,6 @@ import { readMediaFileStream } from "./src/media";
       throw { statusCode: 400, message: err.message };
     });
 
-    reply.header("Access-Control-Allow-Origin", "*");
     reply.type("application/json");
     return readable;
   });
@@ -73,7 +72,6 @@ import { readMediaFileStream } from "./src/media";
         throw { statusCode: 400, message: err.message };
       });
 
-      reply.header("Access-Control-Allow-Origin", "*");
       reply.type("audio/mpeg");
       return readable;
     }
