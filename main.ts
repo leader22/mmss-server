@@ -8,9 +8,12 @@ import { readMediaFileStream } from "./src/media";
 
 (() => {
   const env = process.env.NODE_ENV || "development";
+  const isProduction = env === "production";
   console.log("NODE_ENV:", env);
 
   const [, , configPath] = process.argv;
+  console.log("config:", configPath);
+
   const config = validate(load(__dirname, configPath));
   console.log(config);
 
@@ -20,14 +23,12 @@ import { readMediaFileStream } from "./src/media";
       secret: config.tokenSecret,
       ttl: config.tokenTtl,
     },
-    env === "production"
+    isProduction
   );
   console.log(authKeys);
 
   const server = fastify();
-  server.register(cors, {
-    origin: env === "production" ? false : true,
-  });
+  server.register(cors, { origin: isProduction ? false : true });
   server.register(helmet);
   server.register(bearer, {
     // Type defs requires this, but not used because of `auth` function
