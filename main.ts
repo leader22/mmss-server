@@ -7,7 +7,7 @@ import { generateAuthKeys, validateAuthToken } from "./src/auth";
 import { readMediaFileStream } from "./src/media";
 
 (() => {
-  const env = process.env.NODE_ENV || "development";
+  const env = process.env.NODE_ENV ?? "development";
   const isProduction = env === "production";
   console.log("NODE_ENV:", env);
 
