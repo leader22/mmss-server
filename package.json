@@ -12,7 +12,7 @@
   "author": "leader22",
   "license": "MIT",
   "dependencies": {
-    "fastify": "^3.3.0",
+    "fastify": "^3.5.0",
     "fastify-bearer-auth": "^5.0.2",
     "fastify-cors": "^4.1.0",
     "fastify-helmet": "^5.0.1"
